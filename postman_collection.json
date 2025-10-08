@@ -1,0 +1,236 @@
+{
+  "info": {
+    "name": "ToDo API Collection",
+    "description": "Complete API collection for testing the ToDo FastAPI service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Todo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Complete project documentation\",\n  \"description\": \"Write comprehensive README and API documentation\",\n  \"priority\": \"high\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/todos",
+          "host": ["{{base_url}}"],
+          "path": ["todos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos",
+          "host": ["{{base_url}}"],
+          "path": ["todos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Todo by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos/1",
+          "host": ["{{base_url}}"],
+          "path": ["todos", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Todo",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated project documentation\",\n  \"description\": \"Write comprehensive README, API documentation, and deployment guide\",\n  \"status\": \"in_progress\",\n  \"priority\": \"high\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/todos/1",
+          "host": ["{{base_url}}"],
+          "path": ["todos", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Mark Todo as Completed",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos/1/complete",
+          "host": ["{{base_url}}"],
+          "path": ["todos", "1", "complete"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Todo",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos/1",
+          "host": ["{{base_url}}"],
+          "path": ["todos", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filter Todos by Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos?status=pending",
+          "host": ["{{base_url}}"],
+          "path": ["todos"],
+          "query": [
+            {
+              "key": "status",
+              "value": "pending"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filter Todos by Priority",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos?priority=high",
+          "host": ["{{base_url}}"],
+          "path": ["todos"],
+          "query": [
+            {
+              "key": "priority",
+              "value": "high"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search Todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos?search=project",
+          "host": ["{{base_url}}"],
+          "path": ["todos"],
+          "query": [
+            {
+              "key": "search",
+              "value": "project"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Combined Filters",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos?status=pending&priority=high&search=API",
+          "host": ["{{base_url}}"],
+          "path": ["todos"],
+          "query": [
+            {
+              "key": "status",
+              "value": "pending"
+            },
+            {
+              "key": "priority",
+              "value": "high"
+            },
+            {
+              "key": "search",
+              "value": "API"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Clear Completed Todos",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos/completed",
+          "host": ["{{base_url}}"],
+          "path": ["todos", "completed"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Todo Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/todos/stats",
+          "host": ["{{base_url}}"],
+          "path": ["todos", "stats"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}
