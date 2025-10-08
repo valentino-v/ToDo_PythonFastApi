@@ -1,9 +1,9 @@
 import os
 import sys
 from datetime import datetime
-from typing import List, Optional
+from typing import List
 
-from fastapi import FastAPI, HTTPException, Query, status
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
 # Ensure local imports work when running from different directories
@@ -12,17 +12,14 @@ if CURRENT_DIR not in sys.path:
     sys.path.append(CURRENT_DIR)
 
 from config import settings
-from models import (
-    Todo, TodoCreate, TodoUpdate, TodoList, 
-    HealthResponse, ErrorResponse, TodoStatus, TodoPriority
-)
-from todo_service import todo_service
+from models import Task, TaskCreate, TaskUpdate, HealthResponse
+from todo_service import task_service
 
 # Create FastAPI app
 app = FastAPI(
-    title=settings.app_name,
+    title="Task API",
     version=settings.app_version,
-    description=settings.app_description,
+    description="A simple Task API built with FastAPI",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -46,92 +43,62 @@ def health_check():
         version=settings.app_version
     )
 
-# Todo endpoints
-@app.post("/todos", response_model=Todo, status_code=status.HTTP_201_CREATED, tags=["Todos"])
-def create_todo(todo_data: TodoCreate):
-    """Create a new todo"""
+# Task endpoints
+@app.post("/tasks", response_model=Task, status_code=status.HTTP_201_CREATED, tags=["Tasks"])
+def create_task(task_data: TaskCreate):
+    """Create a new task"""
     try:
-        todo = todo_service.create_todo(todo_data)
-        return todo
+        task = task_service.create_task(task_data)
+        return task
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create todo: {str(e)}"
+            detail=f"Failed to create task: {str(e)}"
         )
 
-@app.get("/todos", response_model=TodoList, tags=["Todos"])
-def list_todos(
-    status_filter: Optional[TodoStatus] = Query(None, alias="status", description="Filter by status"),
-    priority_filter: Optional[TodoPriority] = Query(None, alias="priority", description="Filter by priority"),
-    search: Optional[str] = Query(None, description="Search in title and description")
-):
-    """List all todos with optional filters"""
+@app.get("/tasks", response_model=List[Task], tags=["Tasks"])
+def list_tasks():
+    """List all tasks"""
     try:
-        todos = todo_service.list_todos(
-            status=status_filter,
-            priority=priority_filter,
-            search=search
-        )
-        return TodoList(todos=todos, total=len(todos))
+        tasks = task_service.list_tasks()
+        return tasks
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to retrieve todos: {str(e)}"
+            detail=f"Failed to retrieve tasks: {str(e)}"
         )
 
-@app.delete("/todos/completed", tags=["Todos"])
-def clear_completed_todos():
-    """Delete all completed todos"""
-    deleted_count = todo_service.clear_completed()
-    return {"message": f"Deleted {deleted_count} completed todos"}
-
-@app.get("/todos/{todo_id}", response_model=Todo, tags=["Todos"])
-def get_todo(todo_id: int):
-    """Get a specific todo by ID"""
-    todo = todo_service.get_todo(todo_id)
-    if not todo:
+@app.get("/tasks/{task_id}", response_model=Task, tags=["Tasks"])
+def get_task(task_id: int):
+    """Get a specific task by ID"""
+    task = task_service.get_task(task_id)
+    if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Todo with id {todo_id} not found"
+            detail=f"Task with id {task_id} not found"
         )
-    return todo
+    return task
 
-@app.put("/todos/{todo_id}", response_model=Todo, tags=["Todos"])
-def update_todo(todo_id: int, updates: TodoUpdate):
-    """Update an existing todo"""
-    todo = todo_service.update_todo(todo_id, updates)
-    if not todo:
+@app.put("/tasks/{task_id}", response_model=Task, tags=["Tasks"])
+def update_task(task_id: int, updates: TaskUpdate):
+    """Update an existing task"""
+    task = task_service.update_task(task_id, updates)
+    if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Todo with id {todo_id} not found"
+            detail=f"Task with id {task_id} not found"
         )
-    return todo
+    return task
 
-@app.delete("/todos/{todo_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Todos"])
-def delete_todo(todo_id: int):
-    """Delete a todo"""
-    success = todo_service.delete_todo(todo_id)
+@app.delete("/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Tasks"])
+def delete_task(task_id: int):
+    """Delete a task"""
+    success = task_service.delete_task(task_id)
     if not success:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Todo with id {todo_id} not found"
+            detail=f"Task with id {task_id} not found"
         )
-
-@app.patch("/todos/{todo_id}/complete", response_model=Todo, tags=["Todos"])
-def mark_todo_completed(todo_id: int):
-    """Mark a todo as completed"""
-    todo = todo_service.mark_completed(todo_id)
-    if not todo:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Todo with id {todo_id} not found"
-        )
-    return todo
-
-@app.get("/stats", tags=["Stats"])
-def get_todo_stats():
-    """Get todo statistics"""
-    return todo_service.get_stats()
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,92 +1,57 @@
-from datetime import datetime
 from typing import Optional, List, Literal
+from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 
-# Status and Priority enums
-TodoStatus = Literal["pending", "in_progress", "completed"]
-TodoPriority = Literal["low", "medium", "high"]
+# Status enum simplificado
+TaskStatus = Literal["pending", "in_progress", "done"]
 
-class TodoCreate(BaseModel):
-    """Schema for creating a new todo"""
+class TaskCreate(BaseModel):
+    """Schema for creating a new task"""
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "title": "Complete project documentation",
-                "description": "Write comprehensive README and API documentation",
-                "priority": "high"
+                "description": "Write comprehensive README and API documentation"
             }
         }
     )
     
-    title: str = Field(..., min_length=1, max_length=200, description="Todo title")
-    description: Optional[str] = Field(None, max_length=1000, description="Todo description")
-    priority: TodoPriority = Field(default="medium", description="Todo priority level")
+    title: str = Field(..., min_length=1, max_length=200, description="Task title")
+    description: Optional[str] = Field(None, max_length=1000, description="Task description")
 
-class TodoUpdate(BaseModel):
-    """Schema for updating an existing todo"""
+class TaskUpdate(BaseModel):
+    """Schema for updating an existing task"""
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "title": "Updated project documentation",
                 "description": "Write comprehensive README, API documentation, and deployment guide",
-                "status": "in_progress",
-                "priority": "high"
+                "status": "in_progress"
             }
         }
     )
     
-    title: Optional[str] = Field(None, min_length=1, max_length=200, description="Todo title")
-    description: Optional[str] = Field(None, max_length=1000, description="Todo description")
-    status: Optional[TodoStatus] = Field(None, description="Todo status")
-    priority: Optional[TodoPriority] = Field(None, description="Todo priority level")
+    title: Optional[str] = Field(None, min_length=1, max_length=200, description="Task title")
+    description: Optional[str] = Field(None, max_length=1000, description="Task description")
+    status: Optional[TaskStatus] = Field(None, description="Task status")
 
-class Todo(BaseModel):
-    """Complete Todo model"""
+class Task(BaseModel):
+    """Complete Task model"""
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "id": 1,
                 "title": "Complete project documentation",
                 "description": "Write comprehensive README and API documentation",
-                "status": "pending",
-                "priority": "high",
-                "created_at": "2025-10-07T10:00:00",
-                "updated_at": "2025-10-07T10:00:00"
+                "status": "pending"
             }
         }
     )
     
-    id: int = Field(..., description="Unique todo identifier")
-    title: str = Field(..., description="Todo title")
-    description: Optional[str] = Field(None, description="Todo description")
-    status: TodoStatus = Field(default="pending", description="Todo status")
-    priority: TodoPriority = Field(default="medium", description="Todo priority level")
-    created_at: datetime = Field(..., description="Creation timestamp")
-    updated_at: datetime = Field(..., description="Last update timestamp")
-
-class TodoList(BaseModel):
-    """Response model for todo lists"""
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "todos": [
-                    {
-                        "id": 1,
-                        "title": "Complete project documentation",
-                        "description": "Write comprehensive README and API documentation",
-                        "status": "pending",
-                        "priority": "high",
-                        "created_at": "2025-10-07T10:00:00",
-                        "updated_at": "2025-10-07T10:00:00"
-                    }
-                ],
-                "total": 1
-            }
-        }
-    )
-    
-    todos: List[Todo]
-    total: int
+    id: int = Field(..., description="Unique task identifier")
+    title: str = Field(..., description="Task title")
+    description: Optional[str] = Field(None, description="Task description")
+    status: TaskStatus = Field(default="pending", description="Task status")
 
 class HealthResponse(BaseModel):
     """Health check response"""
