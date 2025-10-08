@@ -1,8 +1,8 @@
 # ToDo API - FastAPI
 
-Una API REST simple para gestión de tareas construida con FastAPI, siguiendo los principios de arquitectura limpia del proyecto [sistema_pagos_mio](https://github.com/valentino-v/sistema_pagos_mio).
+Una API REST simple para gestión de tareas construida con FastAPI, de [sistema_pagos_mio](https://github.com/valentino-v/sistema_pagos_mio).
 
-## 🚀 Características
+## Características
 
 ### Endpoints de la API
 
@@ -29,7 +29,7 @@ Una API REST simple para gestión de tareas construida con FastAPI, siguiendo lo
 - `in_progress`: Tarea en progreso
 - `done`: Tarea completada
 
-## 🛠️ Tecnologías
+## Tecnologías
 
 - **FastAPI**: Framework web moderno para APIs
 - **Pydantic v2**: Validación de datos y serialización
@@ -37,7 +37,7 @@ Una API REST simple para gestión de tareas construida con FastAPI, siguiendo lo
 - **httpx**: Cliente HTTP asíncrono para tests
 - **uvicorn**: Servidor ASGI para desarrollo
 
-## 🏁 Inicio Rápido
+## Inicio Rápido
 
 ### 1. Clonar el repositorio
 ```bash
@@ -65,7 +65,7 @@ uvicorn app:app --reload
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
-## 🧪 Testing
+## Testing
 
 Ejecutar todos los tests:
 ```bash
@@ -77,7 +77,7 @@ Ejecutar tests con verbose:
 pytest -v
 ```
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 El proyecto sigue una arquitectura limpia con separación de responsabilidades:
 
@@ -100,7 +100,7 @@ El proyecto sigue una arquitectura limpia con separación de responsabilidades:
 3. **todo_service.py**: Implementa la lógica de negocio y almacenamiento en memoria
 4. **tests/**: Contiene tests unitarios y de integración
 
-## 📡 Uso de la API
+## Uso de la API
 
 ### Crear una tarea
 ```bash
@@ -131,14 +131,14 @@ curl -X PUT "http://localhost:8000/tasks/1" \
 curl -X DELETE "http://localhost:8000/tasks/1"
 ```
 
-## 📝 Notas de desarrollo
+## Notas de desarrollo
 
 - La aplicación usa almacenamiento en memoria para simplicidad
 - Los datos se pierden al reiniciar el servidor
 - Para producción, se recomienda integrar con una base de datos real
 - El proyecto está configurado para desarrollo con hot-reload
 
-## 🤝 Contribuir
+## Contribuir
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -146,6 +146,6 @@ curl -X DELETE "http://localhost:8000/tasks/1"
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto está bajo la licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
