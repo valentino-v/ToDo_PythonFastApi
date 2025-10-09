@@ -5,6 +5,10 @@ from pydantic import BaseModel, Field, ConfigDict
 # Status enum simplificado
 TaskStatus = Literal["pending", "in_progress", "done"]
 
+# Constants to avoid string duplication
+TASK_TITLE_DESCRIPTION = "Task title"
+TASK_DESCRIPTION_DESCRIPTION = "Task description"
+
 class TaskCreate(BaseModel):
     """Schema for creating a new task"""
     model_config = ConfigDict(
@@ -16,8 +20,8 @@ class TaskCreate(BaseModel):
         }
     )
     
-    title: str = Field(..., min_length=1, max_length=200, description="Task title")
-    description: Optional[str] = Field(None, max_length=1000, description="Task description")
+    title: str = Field(..., min_length=1, max_length=200, description=TASK_TITLE_DESCRIPTION)
+    description: Optional[str] = Field(None, max_length=1000, description=TASK_DESCRIPTION_DESCRIPTION)
 
 class TaskUpdate(BaseModel):
     """Schema for updating an existing task"""
@@ -31,8 +35,8 @@ class TaskUpdate(BaseModel):
         }
     )
     
-    title: Optional[str] = Field(None, min_length=1, max_length=200, description="Task title")
-    description: Optional[str] = Field(None, max_length=1000, description="Task description")
+    title: Optional[str] = Field(None, min_length=1, max_length=200, description=TASK_TITLE_DESCRIPTION)
+    description: Optional[str] = Field(None, max_length=1000, description=TASK_DESCRIPTION_DESCRIPTION)
     status: Optional[TaskStatus] = Field(None, description="Task status")
 
 class Task(BaseModel):
@@ -49,8 +53,8 @@ class Task(BaseModel):
     )
     
     id: int = Field(..., description="Unique task identifier")
-    title: str = Field(..., description="Task title")
-    description: Optional[str] = Field(None, description="Task description")
+    title: str = Field(..., description=TASK_TITLE_DESCRIPTION)
+    description: Optional[str] = Field(None, description=TASK_DESCRIPTION_DESCRIPTION)
     status: TaskStatus = Field(default="pending", description="Task status")
 
 class HealthResponse(BaseModel):

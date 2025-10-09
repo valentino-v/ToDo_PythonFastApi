@@ -47,7 +47,7 @@ MYSQL ACTIVATION GUIDE FOR MYSQL WORKBENCH USERS:
 
 3. Create a user (optional, but recommended):
    ```sql
-   CREATE USER 'todo_user'@'localhost' IDENTIFIED BY 'your_secure_password';
+   CREATE USER 'todo_user'@'localhost' IDENTIFIED BY 'CHANGE_THIS_PASSWORD';
    GRANT ALL PRIVILEGES ON todo_db.* TO 'todo_user'@'localhost';
    FLUSH PRIVILEGES;
    ```
@@ -57,7 +57,7 @@ MYSQL ACTIVATION GUIDE FOR MYSQL WORKBENCH USERS:
    MYSQL_HOST=localhost
    MYSQL_PORT=3306
    MYSQL_USER=todo_user  # or root
-   MYSQL_PASSWORD=your_secure_password
+   MYSQL_PASSWORD=CHANGE_THIS_PASSWORD
    MYSQL_DATABASE=todo_db
    ```
 

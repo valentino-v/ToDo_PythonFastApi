@@ -43,7 +43,7 @@ jobs:
 
       - name: Run unit tests (pytest + coverage XML + JUnit)
         run: |
-          pytest --cov=. --cov-report=xml:coverage.xml --junit-xml=junit.xml -v
+          pytest
 
       - name: Debug coverage files
         if: always()

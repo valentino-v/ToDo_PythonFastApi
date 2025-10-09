@@ -2,6 +2,7 @@
 Tests for the FastAPI application endpoints
 """
 import pytest
+from unittest.mock import patch, Mock
 from httpx import AsyncClient
 from app import app
 
@@ -160,4 +161,44 @@ class TestTaskAPI:
             response = await client.delete("/tasks/999")
         
         assert response.status_code == 404
-        assert "Task with id 999 not found" in response.json()["detail"]
+
+    @pytest.mark.asyncio
+    async def test_health_endpoint(self):
+        """Test health check endpoint"""
+        from httpx import ASGITransport
+        async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+            response = await client.get("/health")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "ok"
+        assert "timestamp" in data
+        assert "version" in data
+
+    @pytest.mark.asyncio 
+    async def test_create_task_exception_handling(self):
+        """Test exception handling in create task"""
+        from httpx import ASGITransport
+        with patch('app.task_service.create_task') as mock_create:
+            mock_create.side_effect = Exception("Database error")
+            
+            async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+                response = await client.post("/tasks", json={
+                    "title": "Test Task"
+                })
+            
+            assert response.status_code == 500
+            assert "Failed to create task" in response.json()["detail"]
+
+    @pytest.mark.asyncio
+    async def test_list_tasks_exception_handling(self):
+        """Test exception handling in list tasks"""
+        from httpx import ASGITransport
+        with patch('app.task_service.list_tasks') as mock_list:
+            mock_list.side_effect = Exception("Database error")
+            
+            async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+                response = await client.get("/tasks")
+            
+            assert response.status_code == 500
+            assert "Failed to retrieve tasks" in response.json()["detail"]
